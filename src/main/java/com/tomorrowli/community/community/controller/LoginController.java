@@ -1,5 +1,6 @@
 package com.tomorrowli.community.community.controller;
 
+import com.google.code.kaptcha.Producer;
 import com.tomorrowli.community.community.dao.User;
 import com.tomorrowli.community.community.mapper.UserMapper;
 import com.tomorrowli.community.community.service.RegisterServices;
@@ -7,6 +8,8 @@ import com.tomorrowli.community.community.util.CommunityConstant;
 import com.tomorrowli.community.community.util.CommunityUtils;
 import com.tomorrowli.community.community.util.SendMail;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +42,11 @@ public class LoginController implements CommunityConstant{
 
     @Autowired
     private RegisterServices registerServices;
+
+    @Autowired
+    private Producer producerKaptcha;
+
+    private static final Logger logger= LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping(value = "/register" ,method = RequestMethod.GET)
     public String getRegisterPage(){
@@ -78,5 +92,27 @@ public class LoginController implements CommunityConstant{
         return "/site/operate-result";
     }
 
+
+    @RequestMapping(value = "/kaptcha",method = RequestMethod.GET)
+    public void getKaptcha(HttpServletResponse response, HttpSession session){
+
+        //生成验证码
+        String text = producerKaptcha.createText();
+        BufferedImage image = producerKaptcha.createImage(text);
+
+        //将验证码写入session
+        session.setAttribute("kaptchacode",text);
+
+        //将图片响应给浏览器
+        response.setContentType("image/png");
+
+        try {
+            ServletOutputStream outputStream = response.getOutputStream();
+            ImageIO.write(image,"png",outputStream);
+        } catch (IOException e) {
+            logger.error("验证码生成失败！",e.getMessage());
+        }
+
+    }
 
 }
