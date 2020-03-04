@@ -24,7 +24,6 @@ import java.util.Map;
  **/
 
 @Controller
-@RequestMapping(path = "/disPost")
 public class DiscussPortController {
 
 

@@ -16,4 +16,12 @@ import java.util.List;
 public interface UserMapper {
 
     User selectUserById(@Param("userId") int userId);
+
+    User selectUserName(@Param("username") String username);
+
+    User selectEmail(@Param("email") String email);
+
+    void insertUser(User user);
+
+    void updateStatus(@Param("userId") int userId,@Param("status") int status);
 }
