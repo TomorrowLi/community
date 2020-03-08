@@ -4,6 +4,8 @@ import com.google.code.kaptcha.Producer;
 import com.tomorrowli.community.community.dao.User;
 import com.tomorrowli.community.community.mapper.UserMapper;
 import com.tomorrowli.community.community.service.RegisterServices;
+import com.tomorrowli.community.community.service.UserServices;
+import com.tomorrowli.community.community.service.imp.UserServicesImpl;
 import com.tomorrowli.community.community.util.CommunityConstant;
 import com.tomorrowli.community.community.util.CommunityUtils;
 import com.tomorrowli.community.community.util.SendMail;
@@ -14,15 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
@@ -45,6 +45,13 @@ public class LoginController implements CommunityConstant{
 
     @Autowired
     private Producer producerKaptcha;
+
+    @Autowired
+    private UserServices userServices;
+
+
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
     private static final Logger logger= LoggerFactory.getLogger(LoginController.class);
 
@@ -113,6 +120,39 @@ public class LoginController implements CommunityConstant{
             logger.error("验证码生成失败！",e.getMessage());
         }
 
+    }
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public String login(String username,String password,Model model, String code,boolean remember,HttpSession session,HttpServletResponse response){
+
+        String kaptchacode = (String) session.getAttribute("kaptchacode");
+
+        //先判断验证码
+        if(StringUtils.isBlank(kaptchacode) || StringUtils.isBlank(code)|| !kaptchacode.equalsIgnoreCase(code)){
+            model.addAttribute("codeMsg","验证码不正确！！");
+            return "/site/login";
+        }
+        int expried=remember?REMEMBER_EXPIRED_TIME:DEFAULT_EXPIRED_TIME;
+
+        Map<String, Object> map = userServices.login(username, password, expried);
+
+        if(map.containsKey("ticket")){
+            Cookie cookie = new Cookie("ticket",map.get("ticket").toString());
+            cookie.setPath(contextPath);
+            cookie.setMaxAge(expried);
+            response.addCookie(cookie);
+            return "redirect:/index";
+        }else {
+            model.addAttribute("usernameMsg",map.get("usernameMsg"));
+            model.addAttribute("passwordMsg",map.get("passwordMsg"));
+            return "/site/login";
+        }
+    }
+
+    @RequestMapping(value = "/logout",method = RequestMethod.GET)
+    public String logout(@CookieValue("ticket") String ticket){
+        userServices.logout(ticket);
+        return "redirect:/index";
     }
 
 }
