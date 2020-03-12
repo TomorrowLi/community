@@ -1,5 +1,6 @@
 package com.tomorrowli.community.community.service;
 
+import com.tomorrowli.community.community.dao.LoginTicket;
 import com.tomorrowli.community.community.dao.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
@@ -19,4 +20,10 @@ public interface UserServices {
     Map<String,Object> login(String username,String password,int expiredTime);
 
     void logout(String ticket);
+
+    LoginTicket findLoginTicket(String ticket);
+
+    void uploadHeaderUrl(int userId,String headerUrl);
+
+    void updatepassword(int userId,String password);
 }

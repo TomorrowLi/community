@@ -17,4 +17,6 @@ public interface LoginTicketMapper {
 
     int insertTicket(LoginTicket ticket);
 
+    LoginTicket findLoginTicket(@Param("ticket") String ticket);
+
 }

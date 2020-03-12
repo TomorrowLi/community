@@ -4,6 +4,7 @@ import com.tomorrowli.community.community.dao.DiscussPost;
 import com.tomorrowli.community.community.dao.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -24,4 +25,8 @@ public interface UserMapper {
     void insertUser(User user);
 
     void updateStatus(@Param("userId") int userId,@Param("status") int status);
+
+    void updateHeaderUrl(@Param("userId") int userId,@Param("headerUrl") String headerUrl);
+
+    void updatePassword(@Param("userId") int userId, @Param("password") String password);
 }

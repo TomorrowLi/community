@@ -89,4 +89,22 @@ public class UserServicesImpl implements UserServices {
         loginTicketMapper.updateStatusByUserId(ticket,1);
     }
 
+    @Override
+    public LoginTicket findLoginTicket(String ticket) {
+
+        return loginTicketMapper.findLoginTicket(ticket);
+    }
+
+    @Override
+    public void uploadHeaderUrl(int userId, String headerUrl) {
+        userMapper.updateHeaderUrl(userId,headerUrl);
+    }
+
+    @Override
+    public void updatepassword(int userId, String password) {
+        User user = userMapper.selectUserById(userId);
+        password=CommunityUtils.md5(password+user.getSalt());
+        userMapper.updatePassword(userId,password);
+    }
+
 }
