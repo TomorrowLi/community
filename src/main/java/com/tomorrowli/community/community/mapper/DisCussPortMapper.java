@@ -15,4 +15,6 @@ import java.util.List;
 public interface DisCussPortMapper {
 
     List<DiscussPost> selectAll(@Param("userId") int userId);
+
+    int insertDisCussport(DiscussPost discussPost);
 }

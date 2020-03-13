@@ -59,7 +59,7 @@ public class UserController {
         return "/site/setting";
     }
 
-    @PostMapping(value = "/upload")
+    @RequestMapping(value = "/upload")
     @LoginRequired
     public String upload(Model model, MultipartFile handerImage){
 
@@ -121,7 +121,7 @@ public class UserController {
     }
 
     @LoginRequired
-    @RequestMapping(value = "/updatePassword" ,method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePassword")
     public String updatePassword(String oldpassword,String newpassword,Model model){
 
         User user = hostHolder.getUser();

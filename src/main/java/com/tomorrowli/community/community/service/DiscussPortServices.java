@@ -14,4 +14,5 @@ import java.util.List;
 public interface DiscussPortServices {
     List<DiscussPost> selectAll(int userId,int page,int pageSize);
 
+    int insertDiscussPost(DiscussPost discussPost);
 }
