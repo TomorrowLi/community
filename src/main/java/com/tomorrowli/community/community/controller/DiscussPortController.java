@@ -12,10 +12,7 @@ import com.tomorrowli.community.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -75,5 +72,14 @@ public class DiscussPortController {
 
         discussPortServices.insertDiscussPost(discussPost);
         return CommunityUtils.getJSONObject(0,"发布成功");
+    }
+
+    @RequestMapping(value = "/discuss/detail/{discussId}")
+    public String getDiscussPostDetail(@PathVariable("discussId") String discussId, Model model){
+        DiscussPost post = discussPortServices.selectDiscussDetail(discussId);
+        model.addAttribute("post",post);
+        User user = userServices.selectUserById(post.getUserId());
+        model.addAttribute("user",user);
+        return "/site/discuss-detail";
     }
 }

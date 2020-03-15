@@ -38,11 +38,16 @@ public class DiscussPortServiceImpl implements DiscussPortServices {
 
         //先对文本和类容进行特殊字符过滤
         discussPost.setTitle(HtmlUtils.htmlEscapeDecimal(discussPost.getTitle()));
-        discussPost.setTitle(HtmlUtils.htmlEscapeDecimal(discussPost.getTitle()));
+        discussPost.setContent(HtmlUtils.htmlEscapeDecimal(discussPost.getContent()));
 
         //然后进行敏感词过滤
         discussPost.setTitle(sensitiveFilter.filter(discussPost.getTitle()));
-        discussPost.setTitle(sensitiveFilter.filter(discussPost.getContent()));
+        discussPost.setContent(sensitiveFilter.filter(discussPost.getContent()));
         return  disCussPortMapper.insertDisCussport(discussPost);
+    }
+
+    @Override
+    public DiscussPost selectDiscussDetail(String discussId) {
+        return disCussPortMapper.selectDiscussDetail(discussId);
     }
 }

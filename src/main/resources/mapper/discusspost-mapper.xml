@@ -19,4 +19,8 @@
         insert INTO discuss_post(<include refid="values"></include>)
         VALUES(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
     </insert>
+
+    <select id="selectDiscussDetail" resultType="DiscussPost">
+        select * from discuss_post where id=#{discussId}
+    </select>
 </mapper>
