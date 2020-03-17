@@ -28,9 +28,9 @@ public class DiscussPortServiceImpl implements DiscussPortServices {
     @Autowired
     private SensitiveFilter sensitiveFilter;
     @Override
-    public List<DiscussPost> selectAll(int userId,int page,int pageSize) {
-        PageHelper.startPage(page,pageSize);
-        return disCussPortMapper.selectAll(userId);
+    public List<DiscussPost> selectAll(int userId,int offset,int limit) {
+        //PageHelper.startPage(page,pageSize);
+        return disCussPortMapper.selectAll(userId,offset,limit);
     }
 
     @Override
@@ -47,7 +47,12 @@ public class DiscussPortServiceImpl implements DiscussPortServices {
     }
 
     @Override
-    public DiscussPost selectDiscussDetail(String discussId) {
+    public DiscussPost selectDiscussDetail(int discussId) {
         return disCussPortMapper.selectDiscussDetail(discussId);
+    }
+
+    @Override
+    public int findDiscussPostRows(int userId) {
+        return disCussPortMapper.selectDiscussPostRows(userId);
     }
 }

@@ -14,9 +14,11 @@ import java.util.List;
 @Mapper
 public interface DisCussPortMapper {
 
-    List<DiscussPost> selectAll(@Param("userId") int userId);
+    List<DiscussPost> selectAll(@Param("userId") int userId,@Param("offset") int offset,@Param("limit") int limit);
 
     int insertDisCussport(DiscussPost discussPost);
 
-    DiscussPost selectDiscussDetail(@Param("discussId") String discussId);
+    DiscussPost selectDiscussDetail(@Param("discussId") int discussId);
+
+    int selectDiscussPostRows(@Param("userId") int userId);
 }

@@ -36,5 +36,22 @@ public interface CommunityConstant {
     int REMEMBER_EXPIRED_TIME=3600 * 24 *100;
 
 
+    /**
+     * 回复帖子
+     */
+
+    int REPLY_POST=1;
+
+
+    /**
+     * 回复评论
+     */
+    int REPLY_COMMNET=2;
+
+
+
+
+
+
 
 }

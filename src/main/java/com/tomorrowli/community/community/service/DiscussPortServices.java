@@ -12,10 +12,11 @@ import java.util.List;
  **/
 @Service
 public interface DiscussPortServices {
-    List<DiscussPost> selectAll(int userId,int page,int pageSize);
+    List<DiscussPost> selectAll(int userId,int offset,int limit);
 
     int insertDiscussPost(DiscussPost discussPost);
 
-    DiscussPost selectDiscussDetail(String discussId);
+    DiscussPost selectDiscussDetail(int discussId);
 
+    int findDiscussPostRows(int userId);
 }

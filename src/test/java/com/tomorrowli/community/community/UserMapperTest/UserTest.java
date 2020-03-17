@@ -42,10 +42,10 @@ public class UserTest {
 
     @Test
     public void disCussPostTest(){
-        List<DiscussPost> discussPosts = disCussPortMapper.selectAll(0);
-        for (DiscussPost discussPost : discussPosts) {
+        //List<DiscussPost> discussPosts = disCussPortMapper.selectAll(0);
+       /* for (DiscussPost discussPost : discussPosts) {
             System.out.println(discussPost.toString());
-        }
+        }*/
 
     }
 }
